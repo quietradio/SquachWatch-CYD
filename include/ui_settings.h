@@ -70,6 +70,9 @@ enum class SettingsRow : uint8_t {
 #if defined(CROWPANEL7)
     BUZZER,          // the CrowPanel 7 only, the one board with a buzzer: OFF, or NEW ONLY
 #endif
+#if SQW_WIFI_5G
+    WIFI_BANDS,      // a chip with 5 GHz only (the NM-CYD-C5): 2.4+5, or 2.4
+#endif
     BOARD_BATTERY,   // the Freenove S3 only: the cell's voltage, on the SYSTEM page
     BACK,
     COUNT,

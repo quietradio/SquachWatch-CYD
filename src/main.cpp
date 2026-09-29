@@ -5661,6 +5661,12 @@ void loop() {
                             if (Settings::buzzerOn()) CrowBuzzer::chirp(BUZZ_CHIRP_MS);
                             break;
 #endif
+#if SQW_WIFI_5G
+                        case SettingsRow::WIFI_BANDS:
+                            Settings::setWifi5(!Settings::wifi5());
+                            setWifi5Enabled(Settings::wifi5());   // from the next sweep
+                            break;
+#endif
                         case SettingsRow::DETECTION_FILTER: enterDetFilter(); break;
                         case SettingsRow::POWER_SAVER: enterPower(); break;
 #if defined(TWATCH_S3)
