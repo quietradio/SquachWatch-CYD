@@ -1,3 +1,79 @@
+# SquachWatch for the RockBase NM-CYD-C5: 5 GHz edition
+
+> **The NM-CYD-C5 is officially supported now.** Since upstream
+> [v1.28.0](https://github.com/skizzophrenic/SquachWatch-CYD/releases/tag/v1.28.0)
+> the board is part of the official project, and the browser flasher at
+> **https://squachwatch.com/** lists it (as a BETA). **Most people should use
+> that.** It gets every upstream update, and nothing here is needed.
+>
+> This is an unofficial fork. It carries one extra for this board:
+> **5 GHz WiFi scanning**, which is offered upstream as
+> [PR #27](https://github.com/skizzophrenic/SquachWatch-CYD/pull/27). If that
+> is merged, this fork has nothing left to add and will say so here.
+
+## Is this my board?
+
+The NM-CYD-C5 looks almost exactly like the classic 2.8" "Cheap Yellow
+Display" (ESP32-2432S028R): same screen, same size, same mounting holes. The
+differences are what is underneath:
+
+- an **ESP32-C5** chip instead of the classic ESP32
+- **two USB-C ports** instead of one (native USB, plus a CH340 serial port)
+- a single RGB LED (WS2812) instead of a three-colour LED
+
+If you are not sure, connect it and run `esptool chip-id`. If it reports
+**ESP32-C5**, you have this board. Board details and the port write-up are in
+[docs/NM-CYD-C5.md](docs/NM-CYD-C5.md).
+
+## What 5 GHz adds
+
+Every other SquachWatch board listens on 2.4 GHz only, so a camera or access
+point on 5 GHz is invisible to it. The ESP32-C5 can hear 5 GHz, so this build
+adds a short 5 GHz look after every 2.4 GHz sweep. It visits the 5 GHz
+channels that have been busy often, and the quiet ones in rotation, so it
+finds new ones. A catch on 5 GHz says **5G** on the alert (for example
+`5G CH 149`).
+
+- Switch it in **Settings > WIFI BANDS** (`2.4+5` or `2.4`), or with
+  `BAND 2` / `BAND BOTH` on the serial console. It is on by default.
+- The cost, measured: about 18% fewer 2.4 GHz frames heard, in exchange for
+  everything on 5 GHz. Set `2.4` if you only care about 2.4 GHz.
+- There is no 6 GHz. The ESP32-C5 is WiFi 6, not 6E, so it has no 6 GHz radio.
+
+## Get it
+
+- **Prebuilt firmware:** the newest release under
+  [Releases](https://github.com/quietradio/SquachWatch-CYD/releases), with
+  flashing instructions and checksums on the release page.
+- **From source:** `git clone https://github.com/quietradio/SquachWatch-CYD`,
+  then `pio run -e nm-cyd-c5 -t upload`.
+
+Moving between this build and the official one keeps your settings,
+calibration and PIN, as long as you flash the four separate files rather than
+one combined image at `0x0`.
+
+## Status
+
+- **Tested on one board.** Everything the official C5 build does, plus 5 GHz
+  scanning. A 5 GHz detection has been tested with an injected beacon, not yet
+  with a real device on 5 GHz.
+- **Problems with 5 GHz:** please
+  [open an issue here](https://github.com/quietradio/SquachWatch-CYD/issues).
+  Anything else about the board belongs upstream now.
+
+## Branches
+
+| Branch | What it is |
+|---|---|
+| `nm-cyd-c5-fork` (default) | 5 GHz on current upstream, plus this page |
+| `c5-5ghz` | 5 GHz exactly as offered in PR #27 |
+| `master` | An unmodified mirror of upstream |
+
+Licensed GPL-3.0, the same as upstream. Everything below this line is the
+upstream README, unchanged.
+
+---
+
 # SquachWatch-CYD
 
 > Surveillance-device detector for the ESP32-2432S028R ("Cheap Yellow Display").
